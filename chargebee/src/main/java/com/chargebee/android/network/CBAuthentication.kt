@@ -13,13 +13,13 @@ data class CBAuthentication(val resource_id: String, val app_id: String,
     companion object {
         @JvmStatic
         @Throws(InvalidRequestException::class, OperationFailedException::class)
-        fun authenticate(sdkKey: Auth, completion : (ChargebeeResult<Any>) -> Unit) {
+        fun authenticate(auth: Auth, completion : (ChargebeeResult<Any>) -> Unit) {
             val logger = CBLogger(name = "configure", action = "configure")
-            ResultHandler.safeExecuter({  AuthResource().authenticate(sdkKey) }, completion, logger)
+            ResultHandler.safeExecuter({  AuthResource().authenticate(auth) }, completion, logger)
         }
         @Throws(InvalidRequestException::class, OperationFailedException::class)
         fun isSDKKeyValid(sdkKey: String, completion : (ChargebeeResult<Any>) -> Unit) {
-            val logger = CBLogger(name = "configure", action = "configure")
+            val logger = CBLogger(name = "configure", action = "configure sdk")
             ResultHandler.safeExecuter({  AuthResource().authenticate(sdkKey) }, completion, logger)
         }
     }

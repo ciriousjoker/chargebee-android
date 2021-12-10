@@ -17,4 +17,4 @@ class KeyValidation(val boolean: Boolean) {
 
     }
 }
-internal data class KeyValidationWrapper(val validation: KeyValidation)
+data class KeyValidationWrapper(val validation: KeyValidation)
