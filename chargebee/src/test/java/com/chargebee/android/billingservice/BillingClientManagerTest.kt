@@ -55,7 +55,7 @@ class BillingClientManagerTest  {
     }
     @After
     fun tearDown(){
-
+        mContext = null
     }
 
     @Test
