@@ -29,22 +29,27 @@ object CBPurchase {
             var SUBS = "subs"
         }
     }
+
+    /*
+    * Get the product ID's from chargebee system
+    */
     @JvmStatic
     fun retrieveProductIDs(params: Array<String>, completion : (CBProductIDResult<ArrayList<String>>) -> Unit) {
         val queryParams = append(params,"Standard",Chargebee.channel)
         retrieveProductIDList(queryParams, completion)
     }
+
+    /* Get the product/sku details from Play console */
     @JvmStatic
     fun retrieveProducts(context: Context, params: ArrayList<String>, callBack : CBCallback.ListProductsCallback<ArrayList<CBProduct>>) {
         try {
             billingClientManager = BillingClientManager(context,SkuType.SUBS, params, callBack)
-           /* GlobalScope.launch {
-                billingClientManager?.loadProductDetails(SkuType.SUBS, params, callBack)
-            }*/
         }catch (ex: CBException){
             callBack.onError(ex)
         }
     }
+
+    /* Buy the product with/without customer Id */
     @JvmStatic
     fun purchaseProduct(
         product: CBProduct, customerID: String,
@@ -71,13 +76,12 @@ object CBPurchase {
         }
     }
 
+    /* Chargebee Method - used to validate the receipt of purchase  */
     @JvmStatic
     @Throws(InvalidRequestException::class, OperationFailedException::class)
     fun validateReceipt(purchaseToken: String, product: CBProduct, completion : (ChargebeeResult<Any>) -> Unit) {
         try {
             val logger = CBLogger(name = "buy", action = "process_purchase_command")
-            //price = products.productPrice.drop(1).dropLast(2).replace(".","").replace(",","")
-            //product.skuDetails.priceCurrencyCode
             val params = Params(
                 purchaseToken,
                 product.productId,
@@ -134,8 +138,13 @@ object CBPurchase {
         }
     }
 
+    /*
+   * Get the product ID's from chargebee system.
+   */
     fun retrieveProductIDList(params: Array<String>, completion: (CBProductIDResult<ArrayList<String>>) -> Unit){
+        // The Plan will be fetched based on the user catalog versions in chargebee system.
         when(Chargebee.version){
+            // If user catalog version1 then get the plan's
             CatalogVersion.V1.value ->{
                 Chargebee.retrieveAllPlans(params){
                     when (it) {
@@ -160,6 +169,7 @@ object CBPurchase {
                     }
                 }
             }
+            // If user catalog version2 then get the Item's
             CatalogVersion.V2.value ->{
                 Chargebee.retrieveAllItems(params){
                     when (it) {
@@ -180,6 +190,7 @@ object CBPurchase {
                     }
                 }
             }
+            // Check the catalog version
             CatalogVersion.Unknown.value ->{
                 val auth = Auth(Chargebee.sdkKey,
                     Chargebee.applicationId,
