@@ -316,18 +316,7 @@ class BillingClientManager constructor(
     }
 
     fun queryAllPurchases(){
-        billingClient.queryPurchasesAsync(
-            BillingClient.SkuType.SUBS
-        ) { billingResult, activeSubsList ->
-            if (billingResult.responseCode == BillingClient.BillingResponseCode.OK) {
-                Log.i(TAG, "queryAllPurchases  :$activeSubsList")
-            } else {
-                Log.i(
-                    TAG,
-                    "queryAllPurchases  :${billingResult.debugMessage}"
-                )
-            }
-        }
+
     }
 
     fun queryPurchaseHistory(){

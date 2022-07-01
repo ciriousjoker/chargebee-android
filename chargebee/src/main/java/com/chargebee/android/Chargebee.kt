@@ -30,7 +30,7 @@ object Chargebee {
     const val channel: String = "play_store"
     var appName: String = "Chargebee"
     const val platform: String = "Android"
-    const val sdkVersion: String = BuildConfig.VERSION_NAME
+    const val sdkVersion: String = "1.0.3-fork"
 
     /* Configure the app details with chargebee system */
     fun configure(site: String, publishableApiKey: String, allowErrorLogging: Boolean = true, sdkKey: String="", packageName: String="" ) {
